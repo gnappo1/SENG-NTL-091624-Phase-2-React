@@ -91,4 +91,7 @@ const projects = [
   },
 ];
 
-export default projects;
+const x = 13;
+let y = "hello";
+
+export { projects, x, y };
