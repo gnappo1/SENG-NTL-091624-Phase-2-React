@@ -1,19 +1,21 @@
 import ProjectListItem from "./ProjectListItem";
 
-const ProjectList = ({projects, searchQuery, phaseSelected}) => {
+const ProjectList = ({ projects, searchQuery, phaseSelected, handleDelete, handlePatchProject }) => {
 
     const renderProjects = () => {
       return finalProjects.map(project => (
         <ProjectListItem
         key={project.id}
         {...project}
+          handleDelete={handleDelete}
+          handlePatchProject={handlePatchProject}
         />
         ))
       }
           
     const finalProjects = projects
     .filter(project => {
-      return (phaseSelected === "All" || project.phase === phaseSelected) && (project.name.toLowerCase().includes(searchQuery.toLowerCase()))
+      return (phaseSelected === "All" || Number(project.phase) === phaseSelected) && (project.name.toLowerCase().includes(searchQuery.toLowerCase()))
     })
     return (
       <section>

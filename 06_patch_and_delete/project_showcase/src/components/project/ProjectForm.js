@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { object, string } from 'yup';
-
+import { v4 as uuidv4 } from "uuid"
+import { fetchPostProject } from "../apis/project/projectApi";
 
 const initialState = {
   name: "",
@@ -31,6 +32,12 @@ const ProjectForm = ({ handleAddProject, removeLastProject }) => {
     })
   }
 
+  const handleFormData = (dataObj) => setFormData(dataObj)
+  
+  const handleError = (errorMsg) => {
+    setError(errorMsg);
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     //! Validate data before sending it ANYWHERE
@@ -44,26 +51,10 @@ const ProjectForm = ({ handleAddProject, removeLastProject }) => {
     //! Validate with yup
     projectSchema.validate(formData)
       .then(validFormData => {
-        handleAddProject(validFormData)
+        const finalizedData = { ...validFormData, id: uuidv4().slice(0, 4) }
+        handleAddProject(finalizedData)
         //! We need to talk to the server
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-        })
-          .then(resp => {
-            if (!resp.ok) {
-              throw new Error("Failed to fetch because server is not running")
-            }
-            setFormData(initialState)
-          })
-          .catch(err => {
-            setError(err.text)
-            setTimeout(() => setError(""), 5000)
-            removeLastProject()
-          })
+        fetchPostProject(url, finalizedData, handleFormData, initialState, handleError, removeLastProject)
       })
       .catch(validationError => setError(validationError.message))
     //! Optimistic rendering
@@ -74,17 +65,17 @@ const ProjectForm = ({ handleAddProject, removeLastProject }) => {
   return (
     <section>
       {error ? <p className="error-message red">{error}</p> : null}
-      <form className="form" autoComplete="off" onChange={handleChange} onSubmit={handleSubmit}>
+      <form className="form" autoComplete="off" onSubmit={handleSubmit}>
         <h3>Add New Project</h3>
 
         <label htmlFor="name">Name</label>
-        <input type="text" id="name" name="name" value={formData.name} />
+        <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} />
 
         <label htmlFor="about">About</label>
-        <textarea id="about" name="about" value={formData.about} />
+        <textarea id="about" name="about" value={formData.about} onChange={handleChange} />
 
         <label htmlFor="phase">Phase</label>
-        <select name="phase" id="phase" value={formData.phase}  >
+        <select name="phase" id="phase" value={formData.phase}  onChange={handleChange} >
           <option value="">Select One</option>
           <option value="1">Phase 1</option>
           <option value="2">Phase 2</option>
@@ -94,10 +85,10 @@ const ProjectForm = ({ handleAddProject, removeLastProject }) => {
         </select>
 
         <label htmlFor="link">Project Homepage</label>
-        <input type="text" id="link" name="link" value={formData.link} />
+        <input type="text" id="link" name="link" value={formData.link} onChange={handleChange} />
 
         <label htmlFor="image">Screenshot</label>
-        <input type="text" id="image" name="image" value={formData.image} />
+        <input type="text" id="image" name="image" value={formData.image} onChange={handleChange} />
 
         <button type="submit">Add Project</button>
       </form>

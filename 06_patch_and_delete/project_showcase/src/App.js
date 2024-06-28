@@ -4,7 +4,6 @@ import ProjectForm from "./components/project/ProjectForm";
 import ProjectList from "./components/project/ProjectList";
 import SearchBar from "./components/search/SearchBar";
 import ButtonsFilter from "./components/search/ButtonsFilter";
-import { v4 as uuidv4 } from "uuid"
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -39,14 +38,20 @@ const App = () => {
 
   const handleAddProject = (newProject) => {
     setProjects(currentProjects => {
-      const lastProjectArray = currentProjects.slice(-1)
-      const id = lastProjectArray.length ? Number(lastProjectArray[0].id) + 1 : uuidv4()
-      return [...currentProjects, { ...newProject, id }]
+      return [...currentProjects, newProject]
     })
+  }
+
+  const handlePatchProject = (patchedProject) => {
+    setProjects(current => current.map(project => project.id === patchedProject.id ? patchedProject : project))
   }
 
   const toggleDarkMode = () => setIsDarkMode(current => !current)
 
+  const handleDelete = (projectId) => {
+    //! using the functional form because the new list of projects ahs to be calculated based on the most recent list version
+    setProjects(current => current.filter(project => project.id !== projectId)) 
+  }
 
   return (
     <div className={isDarkMode ? "App" : "App light"}>
@@ -54,7 +59,7 @@ const App = () => {
       <ProjectForm handleAddProject={handleAddProject} />
       <ButtonsFilter handlePhaseSelection={handlePhaseSelection}/>
       <SearchBar handleSearch={handleSearch} searchQuery={searchQuery} />
-      <ProjectList projects={projects} searchQuery={searchQuery} phaseSelected={phaseSelected}  />
+      <ProjectList handlePatchProject={handlePatchProject} handleDelete={handleDelete} projects={projects} searchQuery={searchQuery} phaseSelected={phaseSelected}  />
 
     </div>
   );
