@@ -1,4 +1,4 @@
-# SENG-LIVE-000000 Phase 2 - React
+# SENG-LIVE-091624 Phase 2 - React
 
 ## Phase Level Objectives
 
@@ -6,18 +6,7 @@
 - Use React to create components that interact with an API
 - Incorporate client-side routing into a single-page application in React
 
-
-| Lecture | Notes | Videos | Starter | Solution |
-| ------- | :---: | ------ | ------- | -------- |
-| 1. (00/00/00) Components & Props     |  [Notes](https://docs.google.com/document/d/1PaEUsoVruIU3pSUOz9jlsfVhxrwB1N7XPYbmak03wKg/edit?usp=sharing)     |  [Video](#)      |    [Starter](#)     |   [Solution](#)       |
-| 2. (00/00/00) State & Events     |  [Notes](https://docs.google.com/document/d/1PaEUsoVruIU3pSUOz9jlsfVhxrwB1N7XPYbmak03wKg/edit?usp=sharing)     |   [Video](#)     |    [Starter](#)     |    [Solution](#), [Local variables vs state variables](https://codesandbox.io/s/counter-state-example-0r8stb?file=/src/App.js), [SmartHome app - Passing State as Props](https://codesandbox.io/s/vigilant-minsky-iiykrb)      |
-| 3. (00/00/00) Information Flow     |  [Notes](https://docs.google.com/document/d/1PaEUsoVruIU3pSUOz9jlsfVhxrwB1N7XPYbmak03wKg/edit?usp=sharing)     |  [Video](#)      |   [Starter](#)      |    [Solution](#), [SmartHome app with clickable bulbs](https://codesandbox.io/s/smarthome-with-clickable-bulbs-woyctp), [SmartHome app with individually clickable bulbs](https://codesandbox.io/s/smarthome-with-individually-switchable-bulbs-du3hot)      |
-| 4. (00/00/00) Forms     |   [Notes](https://docs.google.com/document/d/1PaEUsoVruIU3pSUOz9jlsfVhxrwB1N7XPYbmak03wKg/edit?usp=sharing)    |   [Video](#)     |   [Starter](#)      |  [Solution](#), [controlled form with single state object](https://codesandbox.io/s/refactoring-a-controlled-form-with-individual-pieces-of-state-juv663?file=/src/App.js), [controlled form with individual pieces of state](https://codesandbox.io/s/controlled-form-with-individual-pieces-of-state-pbjpe4?from-embed)        |
-| 5. (00/00/00) Side Effects & Data Fetching     |  [Notes](https://docs.google.com/document/d/1PaEUsoVruIU3pSUOz9jlsfVhxrwB1N7XPYbmak03wKg/edit?usp=sharing)     |   [Video](#)     |   [Starter](#)      |   [Solution](#), [useEffect cleanup demo](https://codesandbox.io/s/useeffect-cleanup-ig17kd?file=/src/Timer.js)       |
-| 6. (00/00/00) PATCH & DELETE     |   [Notes](https://docs.google.com/document/d/1PaEUsoVruIU3pSUOz9jlsfVhxrwB1N7XPYbmak03wKg/edit?usp=sharing)    |   [Video](#)     |    [Starter](#)     |   [Solution](#)       |
-| 7. (00/00/00) Client-Side Routing     |   [Notes](https://docs.google.com/document/d/1PaEUsoVruIU3pSUOz9jlsfVhxrwB1N7XPYbmak03wKg/edit?usp=sharing)    |    [Video](#)    |   [Starter](#)      |    [Solution](#)      |
-| 8. (00/00/00) Styled Components     |   [Notes](https://docs.google.com/document/d/1PaEUsoVruIU3pSUOz9jlsfVhxrwB1N7XPYbmak03wKg/edit?usp=sharing)    |    [Video](#)    |   [Starter](#)      |    [Solution](#)      |
-
+## Phase 2: React
 ## 1: Components and Props
 ### SWBATs:
 - Review the benefits of React over Vanilla JS 
@@ -100,9 +89,9 @@
 ### Lecture Topics:
 - React Router
 
-## 8: (Optional) Styled Components
+## 8: Advanced Hooks (BONUS Lecture)
 ### SWBAT:
-- Observe how styled-components are used for managing and organizing component styles
-- Observe how to pass props (i.e., as, theme) to dynamically render CSS for styled components
+- Observe when to use useContext over local state variables
+- Observe how to leverage memoization hooks like useMemo and useCallback to optimize performance
 ### Lecture Topics:
-- Styled Components
+- useContext, useMemo, useCallback
