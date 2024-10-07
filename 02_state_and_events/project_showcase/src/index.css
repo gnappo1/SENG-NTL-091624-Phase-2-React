@@ -38,6 +38,19 @@ body {
   min-height: 100vh;
 }
 
+.header-dark {
+  color: var(--color);
+  background-color: var(--background);
+}
+
+.header-light {
+  /* --color: var(--black);
+  --background: var(--white);
+  --primary: var(--mid-turquoise); */
+  background-color: #fff;
+  color: #00efe1;
+}
+
 .App.light {
   --color: var(--black);
   --background: var(--white);
