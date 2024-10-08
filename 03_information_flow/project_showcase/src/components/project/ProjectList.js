@@ -1,20 +1,10 @@
 import { useState } from 'react';
 import ProjectListItem from "./ProjectListItem";
 
-const ProjectList = () => {
+const ProjectList = ({ phaseSelected, searchQuery}) => {
+  const [error, setError] = useState(null)
   const [projects, setProjects] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("")
-  const [phaseSelected, setPhaseSelected] = useState("All");
 
-  
-  const handlePhaseSelection = (e) => {
-    if (e.target.textContent === "All") {
-      setPhaseSelected("All")
-    } else {
-      const phase = e.target.textContent.replace("Phase ", "")
-      setPhaseSelected(Number(phase))
-    }
-  }
   
   const handleClick = () => {
     loadProjects();
@@ -23,11 +13,11 @@ const ProjectList = () => {
   const loadProjects = () => {
     fetch("http://localhost:4000/projects")
     .then((res) => res.json())
-    .then((projects) => setProjects(projects));
-  }
-  
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value)
+    .then((projects) => setProjects(projects))
+    .catch((err) => {
+      setError(err.message)
+      setTimeout(() => setError(null), 5000)
+    });
   }
   
   const filteredProjects = projects.filter(project => {
@@ -49,24 +39,11 @@ const ProjectList = () => {
 
   return (
     <section>
+      {error && <div className="error">{error}</div>}
       <h2>Projects</h2>
       <br />
       <button onClick={handleClick}>Load Projects</button>
-
-      <div className="filter" onClick={handlePhaseSelection}>
-        <button>All</button>
-        <button>Phase 5</button>
-        <button>Phase 4</button>
-        <button>Phase 3</button>
-        <button>Phase 2</button>
-        <button>Phase 1</button>
-      </div>
-      <input
-        type="text"
-        placeholder="Search..."
-        onChange={handleSearch}
-      />
-
+      <br />
       <ul className="cards">{renderProjects(searchResults)}</ul>
     </section>
   );
