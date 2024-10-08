@@ -38,10 +38,23 @@ body {
   min-height: 100vh;
 }
 
+.header-dark {
+  color: var(--color);
+  background-color: var(--background);
+}
+
+.header-light {
+  /* --color: var(--black);
+  --background: var(--white);
+  --primary: var(--mid-turquoise); */
+  background-color: #fff;
+  color: #00efe1;
+}
+
 .App.light {
   --color: var(--black);
   --background: var(--white);
-  --primary: var(--dark-turquoise);
+  --primary: var(--mid-turquoise);
 }
 
 section {
@@ -69,7 +82,7 @@ button.active,
 button:focus,
 button:hover {
   outline: none;
-  color: var(--background);
+  color: var(--white);
   background-color: var(--primary);
   border: 2px solid var(--primary);
 }
@@ -118,13 +131,6 @@ header {
   font-size: 1.25em;
   font-family: Helvetica;
   margin-right: 0.5rem;
-}
-
-nav {
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
 }
 
 /* forms */
