@@ -49,8 +49,9 @@ const ProjectList = () => {
 
   return (
     <section>
-      <button onClick={handleClick}>Load Projects</button>
       <h2>Projects</h2>
+      <br />
+      <button onClick={handleClick}>Load Projects</button>
 
       <div className="filter" onClick={handlePhaseSelection}>
         <button>All</button>
