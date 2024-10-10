@@ -1,11 +1,11 @@
-const Header = ({isDarkMode, onToggleDarkMode}) => {
+const Header = ({isDarkMode, toggleDarkMode}) => {
   return (
     <header>
       <h1>
         <span className="logo">{"//"}</span>
         Project Showcase
       </h1>
-      <button onClick={onToggleDarkMode}>{isDarkMode ? "Light Mode" : "Dark Mode"}</button>
+      <button onClick={toggleDarkMode}>{isDarkMode ? "Light Mode" : "Dark Mode"}</button>
     </header>
   );
 }

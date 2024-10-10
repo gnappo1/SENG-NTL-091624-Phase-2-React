@@ -1,4 +1,4 @@
-const ButtonsFilter = ({handlePhaseSelection}) => {
+const PhaseSelection = ({handlePhaseSelection}) => {
   return (
     <div className="filter" onClick={handlePhaseSelection}>
         <button>All</button>
@@ -11,4 +11,4 @@ const ButtonsFilter = ({handlePhaseSelection}) => {
   )
 }
 
-export default ButtonsFilter
+export default PhaseSelection;
