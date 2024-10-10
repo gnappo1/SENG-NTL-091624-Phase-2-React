@@ -1,91 +1,71 @@
-import { useState } from "react";
-import { object, string } from 'yup';
+import React, { useState } from "react";
+import { object, string, number } from 'yup';
+
+const projectSchema = object({
+  name: string("Name must be a string").required("Name is required"),
+  about: string("About must be a string").min(50, "About must be at least 50 characters").required("About is required"),
+  phase: number("Phase must be a number").positive("Phase must be a positive number").integer("Phase must be a whole positive number").max(5, "Phase numbers go from 1 to 5").required("Phase is required"),
+  link: string("Link must be a string").url("Link must be a valid url").required("Link is required"),
+  image: string("Image must be a string").required("Image is required"),
+});
 
 
-const initialState = {
-  name: "",
-  about: "",
-  phase: "",
-  link: "",
-  image: ""
-}
-
-const url = "http://localhost:4000/projects"
-
-const projectSchema = object().shape({
-  name: string().required('Name is required!'),
-  about: string().required('About is required!'),
-  phase: string().required('Phase is required!'),
-  link: string().required('Link is required!'),
-  image: string().required('Image is required!')
-})
-
-const ProjectForm = ({ addProject, removeLastProject }) => {
-  const [formData, setFormData] = useState(initialState);
-  const [error, setError] = useState("");
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+const ProjectForm = ({ handleAddNewProject }) => {
+  const [name, setName] = useState("");
+  const [about, setAbout] = useState("");
+  const [phase, setPhase] = useState("");
+  const [link, setLink] = useState("");
+  const [image, setImage] = useState("");
 
   const handleSubmit = (e) => {
+    //! prevent page refreshes
     e.preventDefault()
-    //! Validate data before sending it ANYWHERE
-    // const newProjectValues = Object.values(formData)
-    // const invalidData = () => newProjectValues.some(value => !value.trim())
-    // if (invalidData()) {
-    //   setError("Values cannot be blank!")
-    //   return
-    // }
+    //! Validate the form values before trusting and sending that data to anyone
+    //! use the project schema to validate the data BUT before doing so, compile the info into new object
+    const newProject = {
+      name, about, phase: Number(phase), link, image
+    }
 
-    //! Validate with yup
-    projectSchema.validate(formData)
-      .then(validFormData => {
-        addProject(validFormData)
-        //! We need to talk to the server
-        fetch(url, {
+    projectSchema.validate(newProject)
+      .then(validatedProject => {
+        //! Send a async fetch POST request
+        fetch("http://localhost:4000/projects", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(validatedProject)
         })
-          .then(resp => {
-            if (!resp.ok) {
-              throw new Error("Failed to fetch because server is not running")
-            }
-            setFormData(initialState)
+          .then(resp => resp.json())
+          .then(createdProject => {
+            //! what do we do here???
+            handleAddNewProject(createdProject)
+            //! reset the form
+            setName("")
+            setAbout("")
+            setPhase("")
+            setLink("")
+            setImage("")
           })
-          .catch(err => {
-            setError(err.text)
-            setTimeout(() => setError(""), 5000)
-            removeLastProject()
-          })
+          .catch(err => alert(err))
       })
-      .catch(validationError => setError(validationError.message))
-    //! Optimistic rendering
-    //! Put the new project onto the page
-
+      .catch(err => alert(err.message))
   }
 
   return (
     <section>
-      {error ? <p className="error-message red">{error}</p> : null}
-      <form className="form" autoComplete="off" onChange={handleChange} onSubmit={handleSubmit}>
+      <form className="form" autoComplete="off" onSubmit={handleSubmit}>
         <h3>Add New Project</h3>
 
         <label htmlFor="name">Name</label>
-        <input type="text" id="name" name="name" value={formData.name} />
+        <input type="text" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} />
 
         <label htmlFor="about">About</label>
-        <textarea id="about" name="about" value={formData.about} />
+        <textarea id="about" name="about" value={about} onChange={(e) => setAbout(e.target.value)} />
 
         <label htmlFor="phase">Phase</label>
-        <select name="phase" id="phase" value={formData.phase}  >
-          <option value="">Select One</option>
+        <select name="phase" id="phase" value={phase} onChange={(e) => setPhase(e.target.value)}>
+          <option>Select One</option>
           <option value="1">Phase 1</option>
           <option value="2">Phase 2</option>
           <option value="3">Phase 3</option>
@@ -94,10 +74,10 @@ const ProjectForm = ({ addProject, removeLastProject }) => {
         </select>
 
         <label htmlFor="link">Project Homepage</label>
-        <input type="text" id="link" name="link" value={formData.link} />
+        <input type="text" id="link" name="link" value={link} onChange={(e) => setLink(e.target.value)} />
 
         <label htmlFor="image">Screenshot</label>
-        <input type="text" id="image" name="image" value={formData.image} />
+        <input type="text" id="image" name="image" value={image} onChange={(e) => setImage(e.target.value)} />
 
         <button type="submit">Add Project</button>
       </form>
