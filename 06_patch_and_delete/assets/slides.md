@@ -27,4 +27,4 @@ title: "P2L6 - PATCH & DELETE slides"
 
 ---
 
-![Updating an array of Objects in React state](./updating-an-array-of-objects-in-state.png)
+![Updating an array of Objects in React state](./updating-an-array-of-objects-in-state.jpeg)
