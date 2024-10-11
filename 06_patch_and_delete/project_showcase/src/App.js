@@ -63,11 +63,19 @@ const App = () => {
     setProjects(currentProjects => [createdProject, ...currentProjects])
   }
 
+  const handleEditProject = (updatedProject) => {
+    setProjectToEditId(null)
+    const updatedArray = projects.map(project => project.id === updatedProject.id ? updatedProject : project)
+    setProjects(updatedArray)
+  }
+
+  const handleDeleteProject = (projectToDeleteId) => setProjects(projects.filter(project => project.id !== projectToDeleteId))
+
   const toggleDarkMode = () => setIsDarkMode(current => !current)
 
   const renderForm = () => {
     if (projectToEditId) {
-      return <ProjectEditForm projectToEditId={projectToEditId} />
+      return <ProjectEditForm projectToEditId={projectToEditId} handleEditProject={handleEditProject}/>
     } else {
       return <ProjectForm handleAddNewProject={handleAddNewProject} />
     }
@@ -86,6 +94,8 @@ const App = () => {
         phaseSelected={phaseSelected} 
         projects={projects} 
         onEditProject={onEditProject}
+        onDeleteProject={handleDeleteProject}
+        onEditClap={handleEditProject}
       />
     </div>
   );

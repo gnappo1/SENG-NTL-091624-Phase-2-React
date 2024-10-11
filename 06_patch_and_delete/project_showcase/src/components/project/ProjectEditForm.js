@@ -3,7 +3,7 @@ import { object, string, number } from 'yup';
 
 const projectSchema = object({
   name: string("Name must be a string").required("Name is required"),
-  about: string("About must be a string").min(50, "About must be at least 50 characters").required("About is required"),
+  about: string("About must be a string").min(25, "About must be at least 25 characters").required("About is required"),
   phase: number("Phase must be a number").positive("Phase must be a positive number").integer("Phase must be a whole positive number").max(5, "Phase numbers go from 1 to 5").required("Phase is required"),
   link: string("Link must be a string").url("Link must be a valid url").required("Link is required"),
   image: string("Image must be a string").required("Image is required"),
@@ -25,7 +25,7 @@ const ProjectEditForm = ({ projectToEditId, handleEditProject }) => {
     fetch(baseURL + `${projectToEditId}`)
         .then(r => r.json())
         .then(setFormData)
-  }, [])
+  }, [projectToEditId])
   
   const handleSubmit = (e) => {
     //! prevent page refreshes
@@ -36,28 +36,30 @@ const ProjectEditForm = ({ projectToEditId, handleEditProject }) => {
       name: formData.name, about: formData.about, phase: Number(formData.phase), link: formData.link, image: formData.image
     }
 
-
+    // handleEditProject(updatedProject) // optimistic rendering
 
     projectSchema.validate(updatedProject)
       .then(validatedProject => {
         //! Send a async fetch POST request
-        fetch("http://localhost:4000/projects", {
-          method: "POST",
+        fetch(baseURL + `${projectToEditId}`, {
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify(validatedProject)
         })
           .then(resp => resp.json())
-          .then(createdProject => {
+          .then(updatedProject => {
             //! what do we do here???
-            // handleAddNewProject(createdProject)
+            handleEditProject(updatedProject) // pessimistic rendering
             //! reset the form
-            // setName("")
-            // setAbout("")
-            // setPhase("")
-            // setLink("")
-            // setImage("")
+            setFormData({
+                name: "",
+                about: "",
+                phase: "",
+                link: "",
+                image: ""
+              })
           })
           .catch(err => alert(err))
       })
@@ -99,7 +101,7 @@ const ProjectEditForm = ({ projectToEditId, handleEditProject }) => {
         <label htmlFor="image">Screenshot</label>
         <input type="text" id="image" name="image" value={formData.image} onChange={handleChange} />
 
-        <button type="submit">UPDATE Project</button>
+        <button type="submit">Update Project</button>
       </form>
     </section>
   );
