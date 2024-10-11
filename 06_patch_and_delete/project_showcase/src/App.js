@@ -4,6 +4,7 @@ import ProjectForm from "./components/project/ProjectForm";
 import ProjectList from "./components/project/ProjectList";
 import PhaseSelection from "./components/search/PhaseSelection";
 import SearchBar from "./components/search/SearchBar";
+import ProjectEditForm from "./components/project/ProjectEditForm";
 // import Timer from "./components/timer/Timer";
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const [phaseSelected, setPhaseSelected] = useState("All");
   const [projects, setProjects] = useState([]);
+  const [projectToEditId, setProjectToEditId] = useState(null)
   console.log("Component Rendered")
 
   // useEffect(() => {
@@ -53,6 +55,8 @@ const App = () => {
     }
   }
 
+  const onEditProject = (projectToEditId) => setProjectToEditId(projectToEditId)
+
 
   const handleAddNewProject = (createdProject) => {
     //! I am about to calculate the new state BASED ON the current state
@@ -61,15 +65,28 @@ const App = () => {
 
   const toggleDarkMode = () => setIsDarkMode(current => !current)
 
+  const renderForm = () => {
+    if (projectToEditId) {
+      return <ProjectEditForm projectToEditId={projectToEditId} />
+    } else {
+      return <ProjectForm handleAddNewProject={handleAddNewProject} />
+    }
+  }
+
   return (
     <div className={isDarkMode ? "App" : "App light"}>
       <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       {/* <button onClick={() => setShow(curr => !curr)}>{show ? "Hide" : "Show"} Timer</button>
       {show && <Timer />} */}
-      <ProjectForm handleAddNewProject={handleAddNewProject} />
+      {renderForm()}
       <PhaseSelection handlePhaseSelection={handlePhaseSelection} />
       <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
-      <ProjectList searchQuery={searchQuery} phaseSelected={phaseSelected} projects={projects} />
+      <ProjectList 
+        searchQuery={searchQuery} 
+        phaseSelected={phaseSelected} 
+        projects={projects} 
+        onEditProject={onEditProject}
+      />
     </div>
   );
 };

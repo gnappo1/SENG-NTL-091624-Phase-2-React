@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa"
 
-const ProjectListItem = ({ id, image, name, link, about, phase }) => {
+const ProjectListItem = ({ id, image, name, link, about, phase, onEditProject }) => {
   // const {image, name, link, about, phase} = project
   const [clapCount, setClapCount] = useState(0);
 
   const handleClap = () => setClapCount(current => current + 1);
+
+  const handleEdit = () => onEditProject(id)
 
   return (
     <li className="card">
@@ -29,7 +31,7 @@ const ProjectListItem = ({ id, image, name, link, about, phase }) => {
       <footer className="extra">
         <span className="badge blue">Phase {phase}</span>
         <div className="manage">
-          <button onClick={() => /* do something */ null}><FaPencilAlt /></button>
+          <button onClick={handleEdit}><FaPencilAlt /></button>
           <button onClick={() => /* do something */ null}><FaTrash /></button>
         </div>
       </footer>
