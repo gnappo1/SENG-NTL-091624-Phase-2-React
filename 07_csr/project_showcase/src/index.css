@@ -70,9 +70,9 @@ button {
   margin-left: 42.5%;
 }
 
-button.active,
-button:focus,
-button:hover {
+a.active,
+a:focus,
+a:hover {
   outline: none;
   color: var(--white);
   background-color: var(--primary);

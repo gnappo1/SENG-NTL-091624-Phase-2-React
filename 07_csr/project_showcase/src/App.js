@@ -5,6 +5,7 @@ import ProjectList from "./components/project/ProjectList";
 import PhaseSelection from "./components/search/PhaseSelection";
 import SearchBar from "./components/search/SearchBar";
 import ProjectEditForm from "./components/project/ProjectEditForm";
+import { Outlet } from "react-router-dom";
 // import Timer from "./components/timer/Timer";
 
 const App = () => {
@@ -17,18 +18,6 @@ const App = () => {
   const [phaseSelected, setPhaseSelected] = useState("All");
   const [projects, setProjects] = useState([]);
   const [projectToEditId, setProjectToEditId] = useState(null)
-  console.log("Component Rendered")
-
-  // useEffect(() => {
-  //   const loadProjects = () => {
-  //     fetch("http://localhost:4000/projects")
-  //     .then(res => res.json())
-  //     .then(projects => setProjects(projects))
-  //     .catch(err => alert(err))
-  //   }
-  //   console.log("useEffect fired")
-  //   loadProjects()
-  // }, [])
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -81,22 +70,11 @@ const App = () => {
     }
   }
 
+  //! Outlet components have to be used to display ANY child routes content
   return (
     <div className={isDarkMode ? "App" : "App light"}>
       <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-      {/* <button onClick={() => setShow(curr => !curr)}>{show ? "Hide" : "Show"} Timer</button>
-      {show && <Timer />} */}
-      {renderForm()}
-      <PhaseSelection handlePhaseSelection={handlePhaseSelection} />
-      <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
-      <ProjectList 
-        searchQuery={searchQuery} 
-        phaseSelected={phaseSelected} 
-        projects={projects} 
-        onEditProject={onEditProject}
-        onDeleteProject={handleDeleteProject}
-        onEditClap={handleEditProject}
-      />
+      <Outlet context={{ searchQuery, phaseSelected, projects, handleSearch, handlePhaseSelection, handleAddNewProject, handleDeleteProject, handleEditProject }}/> 
     </div>
   );
 };

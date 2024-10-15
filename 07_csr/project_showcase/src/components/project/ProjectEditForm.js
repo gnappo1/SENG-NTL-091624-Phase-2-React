@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { object, string, number } from 'yup';
 
 const projectSchema = object({
@@ -12,7 +13,7 @@ const projectSchema = object({
 const baseURL = "http://localhost:4000/projects/"
 
 
-const ProjectEditForm = ({ projectToEditId, handleEditProject }) => {
+const ProjectEditForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     about: "",
@@ -20,12 +21,16 @@ const ProjectEditForm = ({ projectToEditId, handleEditProject }) => {
     link: "",
     image: ""
   });
+  const { handleEditProject } = useOutletContext()
+  const navigate = useNavigate()
+
+  const { projectId } = useParams()
 
   useEffect(() => {
-    fetch(baseURL + `${projectToEditId}`)
+    fetch(baseURL + `${projectId}`)
         .then(r => r.json())
         .then(setFormData)
-  }, [projectToEditId])
+  }, [projectId])
   
   const handleSubmit = (e) => {
     //! prevent page refreshes
@@ -41,7 +46,7 @@ const ProjectEditForm = ({ projectToEditId, handleEditProject }) => {
     projectSchema.validate(updatedProject)
       .then(validatedProject => {
         //! Send a async fetch POST request
-        fetch(baseURL + `${projectToEditId}`, {
+        fetch(baseURL + `${projectId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json"
@@ -53,13 +58,7 @@ const ProjectEditForm = ({ projectToEditId, handleEditProject }) => {
             //! what do we do here???
             handleEditProject(updatedProject) // pessimistic rendering
             //! reset the form
-            setFormData({
-                name: "",
-                about: "",
-                phase: "",
-                link: "",
-                image: ""
-              })
+            navigate(`/projects/${projectId}`)
           })
           .catch(err => alert(err))
       })

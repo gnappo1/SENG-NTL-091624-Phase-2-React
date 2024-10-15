@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { object, string, number } from 'yup';
 
 const projectSchema = object({
@@ -10,12 +11,15 @@ const projectSchema = object({
 });
 
 
-const ProjectForm = ({ handleAddNewProject }) => {
+const ProjectForm = () => {
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [phase, setPhase] = useState("");
   const [link, setLink] = useState("");
   const [image, setImage] = useState("");
+
+  const navigate = useNavigate()
+  const { handleAddNewProject } = useOutletContext()
 
   const handleSubmit = (e) => {
     //! prevent page refreshes
@@ -41,11 +45,7 @@ const ProjectForm = ({ handleAddNewProject }) => {
             //! what do we do here???
             handleAddNewProject(createdProject)
             //! reset the form
-            setName("")
-            setAbout("")
-            setPhase("")
-            setLink("")
-            setImage("")
+            navigate("/projects")
           })
           .catch(err => alert(err))
       })

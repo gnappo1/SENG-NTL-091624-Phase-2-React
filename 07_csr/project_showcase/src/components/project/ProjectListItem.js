@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa"
+import { Link, useNavigate } from "react-router-dom";
 
 const baseURL = "http://localhost:4000/projects/"
 
 
-const ProjectListItem = ({ id, image, name, link, about, phase, onEditProject, onDeleteProject, onEditClap, clapCount = 0 }) => {
+const ProjectListItem = ({ id, image, name, link, about, phase, onEditProject, handleDeleteProject, onEditClap, clapCount = 0 }) => {
   // const {image, name, link, about, phase} = project
   // const [clapCount, setClapCount] = useState(0);
-
+  const navigate = useNavigate()
   const handleClap = () => {
     fetch(baseURL + `${id}`, {
       method: "PATCH",
@@ -27,7 +28,7 @@ const ProjectListItem = ({ id, image, name, link, about, phase, onEditProject, o
       fetch(baseURL + `${id}`, {method: "DELETE"})
         .then(res => {
           if (res.ok) {
-            onDeleteProject(id) // pessimistic rendering
+            handleDeleteProject(id) // pessimistic rendering
 
           }
         })
@@ -44,7 +45,7 @@ const ProjectListItem = ({ id, image, name, link, about, phase, onEditProject, o
       </figure>
 
       <section className="details">
-        <h4>{name}</h4>
+        <Link to={`/projects/${id}`}><h4>{name}</h4></Link>
         <p>{about}</p>
         {link ? (
           <p>
@@ -56,7 +57,7 @@ const ProjectListItem = ({ id, image, name, link, about, phase, onEditProject, o
       <footer className="extra">
         <span className="badge blue">Phase {phase}</span>
         <div className="manage">
-          <button onClick={handleEdit}><FaPencilAlt /></button>
+          <button onClick={() => navigate(`/projects/${id}/edit`)}><FaPencilAlt /></button>
           <button onClick={handleDelete}><FaTrash /></button>
         </div>
       </footer>
