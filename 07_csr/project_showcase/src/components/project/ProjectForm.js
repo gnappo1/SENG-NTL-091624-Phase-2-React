@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 import { object, string, number } from 'yup';
+import toast from "react-hot-toast";
 
 const projectSchema = object({
   name: string("Name must be a string").required("Name is required"),
-  about: string("About must be a string").min(50, "About must be at least 50 characters").required("About is required"),
+  about: string("About must be a string").min(20, "About must be at least 50 characters").required("About is required"),
   phase: number("Phase must be a number").positive("Phase must be a positive number").integer("Phase must be a whole positive number").max(5, "Phase numbers go from 1 to 5").required("Phase is required"),
   link: string("Link must be a string").url("Link must be a valid url").required("Link is required"),
   image: string("Image must be a string").required("Image is required"),
@@ -44,12 +45,14 @@ const ProjectForm = () => {
           .then(createdProject => {
             //! what do we do here???
             handleAddNewProject(createdProject)
-            //! reset the form
+            toast.success(`Successfully created project ${createdProject.name}`)
+
+            //! navigate back to the INDEX route where we display all the projects
             navigate("/projects")
           })
-          .catch(err => alert(err))
+          .catch(err => toast.error(err.message))
       })
-      .catch(err => alert(err.message))
+      .catch(err => toast.error(err.message))
   }
 
   return (

@@ -5,7 +5,16 @@ import ProjectList from './ProjectList';
 import { useOutletContext } from 'react-router-dom';
 
 const ProjectsContainer = () => {
-    const {handlePhaseSelection, searchQuery, handleSearch, phaseSelected, projects, handleDeleteProject} = useOutletContext()
+    const {
+      handlePhaseSelection,
+      searchQuery,
+      handleSearch,
+      phaseSelected,
+      projects,
+      handleDeleteProject,
+      handleClap,
+      baseURL,
+    } = useOutletContext();
 
     return (
       <div>
@@ -15,9 +24,9 @@ const ProjectsContainer = () => {
           searchQuery={searchQuery}
           phaseSelected={phaseSelected}
           projects={projects}
-        //   onEditProject={onEditProject}
           handleDeleteProject={handleDeleteProject}
-        //   onEditClap={onEditClap}
+          handleClap={handleClap}
+          baseURL={baseURL}
         />
       </div>
     );

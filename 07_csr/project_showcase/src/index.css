@@ -198,6 +198,10 @@ select:focus {
   border: 2px solid var(--dark-turquoise);
 }
 
+.card.detail {
+  margin: auto;
+}
+
 @media screen and (max-width: 588px) {
   .card {
     display: block;

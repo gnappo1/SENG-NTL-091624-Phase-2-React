@@ -4,18 +4,19 @@ const ProjectList = ({
   projects,
   searchQuery,
   phaseSelected,
-  // onEditProject,
   handleDeleteProject,
-  // onEditClap
+  handleClap,
+  baseURL
 }) => {
+
   const renderProjects = () => {
     return finalProjects.map((project) => (
       <ProjectListItem
         key={project.id}
         {...project}
-        // onEditProject={onEditProject}
         handleDeleteProject={handleDeleteProject}
-        // onEditClap={onEditClap}
+        handleClap={handleClap}
+        baseURL={baseURL}
       />
     ));
   };

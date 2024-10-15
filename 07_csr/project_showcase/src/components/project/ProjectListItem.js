@@ -1,37 +1,20 @@
-import { useState } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-const baseURL = "http://localhost:4000/projects/"
-
-
-const ProjectListItem = ({ id, image, name, link, about, phase, onEditProject, handleDeleteProject, onEditClap, clapCount = 0 }) => {
-  // const {image, name, link, about, phase} = project
-  // const [clapCount, setClapCount] = useState(0);
+const ProjectListItem = ({ id, image, name, link, about, phase, handleDeleteProject, handleClap, clapCount = 0, baseURL }) => {
   const navigate = useNavigate()
-  const handleClap = () => {
-    fetch(baseURL + `${id}`, {
-      method: "PATCH",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({clapCount: clapCount + 1})
-    })
-      .then(response => response.json())
-      .then(onEditClap)
-  }
-
-  const handleEdit = () => onEditProject(id)
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this project?")) {
       fetch(baseURL + `${id}`, {method: "DELETE"})
         .then(res => {
           if (res.ok) {
+            toast.success(`Successfully deleted project ${name}`)
             handleDeleteProject(id) // pessimistic rendering
-
           }
         })
+        .catch(err => toast.error(err.message))
     }
   }
 
@@ -39,7 +22,7 @@ const ProjectListItem = ({ id, image, name, link, about, phase, onEditProject, h
     <li className="card">
       <figure className="image">
         <img src={image} alt={name} />
-        <button className="claps" onClick={handleClap}>
+        <button className="claps" onClick={() => handleClap(id, clapCount)}>
           👏{clapCount }
         </button>
       </figure>
