@@ -58,9 +58,8 @@ const App = () => {
   }, []);
 
   const handleEditProject = useCallback((updatedProject) => {
-    const updatedArray = projects.map(project => project.id === updatedProject.id ? updatedProject : project);
-    setProjects(updatedArray);
-  }, [projects]);
+    setProjects(currentProjects => currentProjects.map(project => project.id === updatedProject.id ? updatedProject : project));
+  }, []);
 
   const handleClap = useCallback((id, currentClapCount) => {
     fetch(baseURL + `${id}`, {
@@ -78,8 +77,8 @@ const App = () => {
   }, []);
 
   const handleDeleteProject = useCallback((projectToDeleteId) => {
-    setProjects(projects.filter(project => project.id !== projectToDeleteId));
-  }, [projects]);
+    setProjects(currentProjects => currentProjects.filter(project => project.id !== projectToDeleteId));
+  }, []);
 
   if (error) {
     toast.error(error);
