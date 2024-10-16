@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { ThemeContext } from "../../context/ThemeProvider";
 
-const Header = ({isDarkMode, toggleDarkMode}) => {
+const Header = () => {
+  const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
   return (
     <header>
       <h1>
